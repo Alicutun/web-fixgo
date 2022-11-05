@@ -7,6 +7,12 @@ import Booking from "../components/subcomponents/Booking";
 import axios from "axios";
 
 const MovieDetail = () => {
+   function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [ mnth, day,date.getFullYear()].join("/");
+  }
   const [description, setDescription] = useState(true);
   // const [payment, setPayment] = useState(false);
   // call lấy data movie detail theo id
@@ -41,7 +47,7 @@ const MovieDetail = () => {
                 <b>Director:</b> {movie.director} <br />
                 <b>Cast:</b> {movie.cast} <br />
                 <b>Genre:</b> {movie.genre} <br />
-                <b>Release time:</b> {movie.releaseTime} <br />
+                <b>Release time:</b> {convert(movie.releaseTime)} <br />
                 <b>Running time:</b> {movie.runningTime} minutes
                 <br />
                 <b>Language:</b> {movie.language} <br />
