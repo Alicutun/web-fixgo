@@ -5,6 +5,12 @@ import SeatPicker from "../../react-seat-picker/dist/index";
 import axios from "axios";
 // ngon lành cành trúc khế lun
 const Booking = ({ idMovie, nameMovie }) => {
+   function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [ mnth, day,date.getFullYear()].join("/");
+  }
   const [payment, setPayment] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
@@ -214,7 +220,7 @@ const Booking = ({ idMovie, nameMovie }) => {
               <option value="">-- Select Date --</option>
               {date?.map((items, index) => (
                 <option key={index} value={items}>
-                  {items}
+                  {convert(items)}
                 </option>
               ))}
             </select>
