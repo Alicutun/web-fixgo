@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BASE_URL } from "../../constants";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export const Booking = ({ idMovie, nameMovie }) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,8 @@ export const Booking = ({ idMovie, nameMovie }) => {
 	const [idselected, setIdSelected] = useState([]);
 
 	const [modal, setModal] = useState(false);
+	const [modalChangePage, setModalX] = useState(false);
+
 	const [password, setPassword] = useState("");
 
 	const [seat, setSeat] = useState();
@@ -180,7 +183,7 @@ export const Booking = ({ idMovie, nameMovie }) => {
 		fetch();
 		return () => {};
 	}, []);
-
+	const navigate = useNavigate();
 	return (
 		<div>
 			<div className='selectMovie'>
@@ -284,6 +287,10 @@ export const Booking = ({ idMovie, nameMovie }) => {
 							<Button
 								size='small'
 								onClick={() => {
+									if (money < totalprice) {
+										setModalX(true);
+										return 0;
+									}
 									handleBooking();
 									if (user) setModal(true);
 								}}
@@ -331,6 +338,36 @@ export const Booking = ({ idMovie, nameMovie }) => {
 										Submit
 									</button>
 								</form>
+							</div>
+						</div>
+					</div>
+				)}
+				{modalChangePage && (
+					<div className='modalxa'>
+						<div className='modalxa-form'>
+							<div>
+								<button className='btnX' onClick={() => setModalX(false)}>
+									<i class='fa-solid fa-xmark'></i>
+								</button>
+							</div>
+							<div className='container'>
+								<div className='title'>Payment Failure </div>
+								<div className='content' style={{ marginTop: "20px" }}>
+									<b>Not Enough Money in Your Account?</b>
+								</div>
+								<div className='content'>Current balance: {money}$</div>
+
+								<div className='content'>
+									The amount need to pay: {totalprice}$
+								</div>
+
+								<button
+									className='button'
+									style={{ marginTop: "10px" }}
+									onClick={(e) => navigate("/Myprofile")}
+								>
+									Deposit now
+								</button>
 							</div>
 						</div>
 					</div>

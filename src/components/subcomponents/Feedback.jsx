@@ -31,9 +31,16 @@ export const Feedback = ({
 	const [hoverValue, setHoverValue] = useState(undefined);
 
 	const stars = Array(10).fill(0);
-	const handleBtnReview = () => {
+	const handleBtnReview = async () => {
 		if (user) {
-			setOpenModal(true);
+			try {
+				await axios.get(
+					`${BASE_URL}/api/commentsFeedback/add_feedback_check/${user.data._id}/${idMovie}`
+				);
+				setOpenModal(true);
+			} catch (error) {
+				toast.error("You haven't seen this movie!", { autoClose: 2000 });
+			}
 		} else {
 			toast.warning("Please login!");
 		}
