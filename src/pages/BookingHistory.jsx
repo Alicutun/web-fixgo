@@ -36,6 +36,7 @@ export const BookingHistory = () => {
 	const [data, setData] = useState([]);
 	const [dataRefund, setDataRefund] = useState([]);
 	const [pageSize, setPageSize] = useState(5);
+	const [pageSizeX, setPageSizeX] = useState(5);
 	const [open, setOpen] = useState(false);
 	const [idBillSecleted, setIdBillSecleted] = useState("");
 	const [date, setDate] = useState();
@@ -94,16 +95,17 @@ export const BookingHistory = () => {
 			},
 			{
 				field: "createdAt",
-				headerName: "CREATE",
+				headerName: "REFUND CREATE DATE",
 				width: 200,
 				valueGetter: (item) =>
 					moment(item.row.createdAt).format("YYYY-MM-DD  hh:mm:ss"),
 			},
 			{
 				field: "totalMoney",
-				headerName: "The amount refunded",
+				headerName: "THE AMOUNT REFUNDED",
 				width: 200,
-				valueGetter: (item) => item.row.totalMoney + " $",
+				valueGetter: (item) =>
+					item.row.totalMoney > 0 ? item.row.totalMoney + " $" : "0 $",
 			},
 			{
 				field: "status",
@@ -237,7 +239,7 @@ export const BookingHistory = () => {
 				</div>
 				{dataRefund.length > 0 && (
 					<>
-						<div className='title'>Recent ticket refund history</div>
+						<div className='title'>Recent Ticket Refund History</div>
 						<div
 							style={{
 								marginTop: 20,
@@ -256,8 +258,8 @@ export const BookingHistory = () => {
 								getRowId={(row) => row._id}
 								columns={columnRefund}
 								rowsPerPageOptions={[5, 10, 20]}
-								pageSize={pageSize}
-								onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+								pageSize={pageSizeX}
+								onPageSizeChange={(newPageSize) => setPageSizeX(newPageSize)}
 								sx={{
 									borderRadius: "10px",
 									boxShadow: 2,

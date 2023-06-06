@@ -145,7 +145,7 @@ export const Booking = ({ idMovie, nameMovie }) => {
 
 	const openPayPal = () => {
 		window.open(`${BASE_URL}/api/paypal/pay/${user.data._id}`);
-		window.location.reload(false);
+		// window.location.reload(false);
 	};
 
 	const newPage = async () => {
@@ -301,6 +301,10 @@ export const Booking = ({ idMovie, nameMovie }) => {
 							<Button
 								size='small'
 								onClick={() => {
+									if (!user) {
+										toast.warning("Please login !");
+										return 0;
+									}
 									if (money < totalprice) {
 										setModalX(true);
 										return 0;
