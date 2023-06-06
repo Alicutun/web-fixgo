@@ -18,6 +18,7 @@ export const Booking = ({ idMovie, nameMovie }) => {
 
 	const [date, setDate] = useState([]);
 	const [iddate, setIdDate] = useState("");
+	console.log("iddate:", iddate);
 
 	const [sesscion, setSesscion] = useState([]);
 	const [idsesscion, setIdSession] = useState("");
@@ -68,7 +69,7 @@ export const Booking = ({ idMovie, nameMovie }) => {
 		const { data } = await axios.get(
 			`${BASE_URL}/api/movies/findMovieStep2/${idMovie}/${idcinema}`
 		);
-		await setDate(data);
+		await setDate(data.reverse());
 	};
 
 	useEffect(() => {
@@ -184,6 +185,17 @@ export const Booking = ({ idMovie, nameMovie }) => {
 		return () => {};
 	}, []);
 	const navigate = useNavigate();
+
+	// press enter
+	const handleSearchEnter = async (event) => {
+		if (event.key === "Enter") {
+			bookWithAccount();
+		}
+	};
+
+	useEffect(() => {
+		if (date.length > 0) setIdDate(date[0]);
+	}, [date]);
 	return (
 		<div>
 			<div className='selectMovie'>
@@ -212,7 +224,9 @@ export const Booking = ({ idMovie, nameMovie }) => {
 									setIdDate(e.target.value);
 								}}
 							>
-								<option value=''>-- Select Date --</option>
+								{date.length === 0 && (
+									<option value=''>-- Select Date --</option>
+								)}
 								{date?.map((items, index) => (
 									<option key={index} value={items}>
 										{items.slice(0, 10).split("-").reverse().join("-")}
@@ -333,6 +347,7 @@ export const Booking = ({ idMovie, nameMovie }) => {
 										className='textarea'
 										type='password'
 										onChange={(e) => setPassword(e.target.value)}
+										onKeyUp={(e) => handleSearchEnter(e)}
 									/>
 									<button className='button' style={{ marginTop: "30px" }}>
 										Submit

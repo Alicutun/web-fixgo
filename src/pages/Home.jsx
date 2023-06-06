@@ -24,6 +24,14 @@ export const Home = () => {
 
 	const image = [
 		{
+			title: "trainsformers",
+			url: "https://bloganchoi.com/wp-content/uploads/2020/07/phim-robot-hanh-dong-hay-nhat.jpg",
+		},
+		{
+			title: "Dungeons & Dragons: Thief's Honor ",
+			url: "https://www.themoviedb.org/t/p/w500_and_h282_face/oblUNeHlwV3VsjB5ITMlco5ZSOF.jpg",
+		},
+		{
 			title: "Legendary Fist 3 (2023)",
 			url: "https://www.themoviedb.org/t/p/w500_and_h282_face/1AOZAcGgJuS85iec4xvqCAnIDrN.jpg",
 		},
@@ -31,10 +39,7 @@ export const Home = () => {
 			title: "Guardians of the Galaxy 3 (2023)",
 			url: "https://www.themoviedb.org/t/p/original/51vreLbrGwzAg4WRCHgitWz6Naw.jpg",
 		},
-		{
-			title: "Dungeons & Dragons: Thief's Honor ",
-			url: "https://www.themoviedb.org/t/p/w500_and_h282_face/oblUNeHlwV3VsjB5ITMlco5ZSOF.jpg",
-		},
+
 		{
 			title: "Super Mario Brothers (2023)",
 			url: "https://www.themoviedb.org/t/p/w500_and_h282_face/2klQ1z1fcHGgQPevbEQdkCnzyuS.jpg",
@@ -47,10 +52,7 @@ export const Home = () => {
 			title: "Covenant (2023)",
 			url: "https://www.themoviedb.org/t/p/w500_and_h282_face/eTvN54pd83TrSEOz6wbsXEJktCV.jpg",
 		},
-		// {
-		// 	title: "trainsformers",
-		// 	url: "https://bloganchoi.com/wp-content/uploads/2020/07/phim-robot-hanh-dong-hay-nhat.jpg",
-		// },
+
 		// {
 		// 	title: "black panther",
 		// 	url: "https://kyty.vn/wp-content/uploads/2021/06/black-panther-744x419-1.png",

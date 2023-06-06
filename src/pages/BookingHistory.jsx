@@ -39,23 +39,18 @@ export const BookingHistory = () => {
 	const [open, setOpen] = useState(false);
 	const [idBillSecleted, setIdBillSecleted] = useState("");
 	const [date, setDate] = useState();
-	console.log("date:", date);
-	console.log("date:", moment(date).format("YYYY-MM-DD"));
+
 	const [idSeats, setIdSeat] = useState([]);
 
 	const idUser = useSelector((state) => state.auth.login?.currentUser.data._id);
-
-	const listSeat =
-		data?.find((item) => item.idBill === idBillSecleted)?.listItem ?? [];
-
+	const fetchHistory = async () => {
+		const { data } = await axios.get(
+			`${BASE_URL}/api/movies/historyBooking/${idUser}`
+		);
+		setData(data.reverse());
+	};
 	useEffect(() => {
-		const fetchUsers = async () => {
-			const { data } = await axios.get(
-				`${BASE_URL}/api/movies/historyBooking/${idUser}`
-			);
-			setData(data.reverse());
-		};
-		fetchUsers();
+		fetchHistory();
 	}, [idUser]);
 	const fetchUsers = async () => {
 		const { data } = await axios.get(`${BASE_URL}/api/revertTicket/${idUser}`);
@@ -68,7 +63,7 @@ export const BookingHistory = () => {
 	const handleRefund = async () => {
 		const data = {
 			idBill: idBillSecleted,
-			list: idSeats,
+			list: idSeats.map((item) => item.id),
 			idUser: idUser,
 			// createdAt: moment(new Date().toString()).format("YYYY-MM-DD"),
 			createdAt: moment(date).format("YYYY-MM-DD"),
@@ -78,6 +73,7 @@ export const BookingHistory = () => {
 			await axios.post(`${BASE_URL}/api/revertTicket/checkIn`, data);
 			toast.success("Refund success !");
 			setOpen(false);
+			fetchHistory();
 			fetchUsers();
 		} catch (err) {
 			toast.error("Refund failed !");
@@ -86,8 +82,6 @@ export const BookingHistory = () => {
 
 	const columnRefund = useMemo(
 		() => [
-			{ field: "_id", headerName: "ID", width: 300 },
-
 			{
 				field: "idOldOrder",
 				headerName: "Id OldOrder",
@@ -104,6 +98,12 @@ export const BookingHistory = () => {
 				width: 200,
 				valueGetter: (item) =>
 					moment(item.row.createdAt).format("YYYY-MM-DD  hh:mm:ss"),
+			},
+			{
+				field: "totalMoney",
+				headerName: "The amount refunded",
+				width: 200,
+				valueGetter: (item) => item.row.totalMoney + " $",
 			},
 			{
 				field: "status",
@@ -141,13 +141,24 @@ export const BookingHistory = () => {
 				getActions: (item) => {
 					return [
 						<GridActionsCellItem
-							icon={<Button sx={{ width: "50px" }}>Refund</Button>}
+							icon={
+								<Button
+									sx={{
+										width: "50px",
+										color: item.row.status === 0 ? "" : "orange",
+									}}
+								>
+									<b>{item.row.status === 0 ? "Refund" : "Refunded"}</b>
+								</Button>
+							}
+							disabled={item.row.status === 0 ? false : true}
 							className='textPrimary'
 							onClick={() => {
 								setOpen(true);
 								console.log(item);
 								setDate(item.row.date);
 								setIdBillSecleted(item.id);
+								setIdSeat(item.row.listItem);
 							}}
 						/>,
 					];
@@ -174,21 +185,9 @@ export const BookingHistory = () => {
 					<Typography fontSize={18}>
 						<b>Refund fee:</b> 10%
 					</Typography>
-
-					<Autocomplete
-						multiple
-						id='tags-outlined'
-						options={listSeat ?? []}
-						getOptionLabel={(option) => option.number}
-						onChange={(event, value) => {
-							setIdSeat(value.map((item) => item.id));
-						}}
-						filterSelectedOptions
-						renderInput={(params) => (
-							<TextField {...params} label='Select Seats' placeholder='Seats' />
-						)}
-					/>
-
+					<Typography fontSize={18}>
+						<b>Seat:</b> {idSeats.map((item) => item.number).join(", ")}
+					</Typography>
 					<Stack alignItems='center'>
 						<Button
 							onClick={handleRefund}
