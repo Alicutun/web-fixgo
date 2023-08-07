@@ -124,8 +124,8 @@ export const Login = ({ ModalLogin }) => {
 							</div>
 							<div className='flex'>
 								<div className='label_checkbox'>
-									{/* <input type='checkbox' />
-									&nbsp;Remember me */}
+									<input type='checkbox' />
+									&nbsp;Remember me
 								</div>
 								<Link to='/' className='forgot' onClick={postForget}>
 									Forgot password?
